@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CaiwuDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.yh_types as yhTypes
+        ,a.purpose as purpose
+        ,a.maxMoney as maxMoney
+        ,a.expenditure_time as expenditureTime
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.CaiwuView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Caiwu  a
+        <where>
+            <if test=" params.yhTypes != '' and params.yhTypes != null">
+                and a.yh_types = #{params.yhTypes}
+            </if>
+            <if test=" params.purpose != '' and params.purpose != null and params.purpose != 'null' ">
+                and a.purpose like CONCAT('%',#{params.purpose},'%')
+            </if>
+            <if test=" params.maxMoneyStart != '' and params.maxMoneyStart != null and params.maxMoneyStart != 'null' ">
+                and a.maxMoney &gt;= #{params.maxMoneyStart}
+            </if>
+            <if test=" params.maxMoneyEnd != '' and params.maxMoneyEnd != null and params.maxMoneyEnd != 'null' ">
+                and a.maxMoney &lt;= #{params.maxMoneyEnd}
+            </if>
+            <if test=" params.expenditureTimeStart != '' and params.expenditureTimeStart != null and params.expenditureTimeStart != 'null' ">
+                and a.expenditure_time &gt;= #{params.expenditureTimeStart}
+            </if>
+            <if test=" params.expenditureTimeEnd != '' and params.expenditureTimeEnd != null and params.expenditureTimeEnd != 'null' ">
+                and a.expenditure_time &lt;= #{params.expenditureTimeEnd}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.FangjianyudingDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.fj_types as fjTypes
+        ,a.yh_types as yhTypes
+        ,a.sfdd_types as sfddTypes
+        ,a.create_time as createTime
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.FangjianyudingView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Fangjianyuding  a
+        <where>
+            <if test=" params.fjTypes != '' and params.fjTypes != null and params.fjTypes != 'null' ">
+                and a.fj_types = #{params.fjTypes}
+            </if>
+            <if test=" params.yhTypes != '' and params.yhTypes != null">
+                and a.yh_types = #{params.yhTypes}
+            </if>
+            <if test=" params.sfddTypes != '' and params.sfddTypes != null and params.sfddTypes != 'null' ">
+                and a.sfdd_types = #{params.sfddTypes}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

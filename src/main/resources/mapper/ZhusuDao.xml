@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ZhusuDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.fj_types as fjTypes
+        ,a.yh_types as yhTypes
+        ,a.initiate_time as initiateTime
+        ,a.finish_time as finishTime
+        ,a.zhuangt as zhuangt
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.ZhusuView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Zhusu  a
+        <where>
+            <if test=" params.fjTypes != '' and params.fjTypes != null and params.fjTypes != 'null' ">
+                and a.fj_types = #{params.fjTypes}
+            </if>
+            <if test=" params.yhTypes != '' and params.yhTypes != null">
+                and a.yh_types = #{params.yhTypes}
+            </if>
+            <if test=" params.initiateTimeStart != '' and params.initiateTimeStart != null and params.initiateTimeStart != 'null' ">
+                and a.initiate_time &gt;= {params.initiateTimeStart}
+            </if>
+            <if test=" params.initiateTimeEnd != '' and params.initiateTimeEnd != null and params.initiateTimeEnd != 'null' ">
+                and a.initiate_time &lt;= {params.initiateTimeEnd}
+            </if>
+            <if test=" params.finishTimeStart != '' and params.finishTimeStart != null and params.finishTimeStart != 'null' ">
+                and a.finish_time &gt;= {params.finishTimeStart}
+            </if>
+            <if test=" params.finishTimeEnd != '' and params.finishTimeEnd != null and params.finishTimeEnd != 'null' ">
+                and a.finish_time &lt;= {params.finishTimeEnd}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>
